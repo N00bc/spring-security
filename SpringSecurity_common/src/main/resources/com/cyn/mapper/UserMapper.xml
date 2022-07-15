@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyn.mapper.UserMapper">
+    <!--根据用户名查询信息-->
+    <select id="getByUsername" resultType="User">
+        SELECT id,
+               username,
+               password,
+               enabled,
+               accountNonExpired,
+               accountNonLocked,
+               credentialsNonExpired
+        FROM user
+        WHERE username = #{username}
+    </select>
+    <!--根据id查询用户的角色信息-->
+    <select id="getRolesById" resultType="com.cyn.entity.Role">
+        SELECT r.id,
+               r.name,
+               r.name_zh
+        FROM role r,
+             user_role ur
+        WHERE r.id = ur.r_id
+          AND ur.u_id = #{id}
+    </select>
+    <!--更新密码-->
+    <update id="updatePassword">
+        UPDATE user
+        set password = #{password}
+        WHERE username = #{username}
+    </update>
+</mapper>
